@@ -1,5 +1,30 @@
 # Changelog
 
+## v2.0.1 — mdformat for markdown
+
+Switched the markdown formatter in `hooks/scripts/write-format.sh` from
+`prettier` to `mdformat`. Reasons:
+
+- `prettier` requires Node.js, which isn't always present on Linux servers
+  and feels heavy for a single hook.
+- `mdformat` is Python-based and installs via `pipx`, which ships in
+  Ubuntu's apt repositories.
+- `mdformat` is more conservative: it aligns pipe tables and normalizes
+  structural markdown but does not rewrap prose, which matches the
+  writing-hygiene rules in CLAUDE.md.
+
+Install on the local side:
+
+```sh
+sudo apt install pipx
+pipx ensurepath
+pipx install mdformat
+pipx inject mdformat mdformat-gfm mdformat-tables
+```
+
+`prettier` remains in the hook for `.js`, `.ts`, `.json`, `.yaml`, `.css`,
+and `.html` files. `ruff` continues to handle `.py`.
+
 ## v2.0.0 — Companion to Superpowers
 
 ### What changed

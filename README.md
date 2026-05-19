@@ -54,7 +54,7 @@ System requirements:
 
 - Claude Code with Superpowers plugin installed and active
 - `jq` for hook JSON parsing (`brew install jq` / `apt install jq`)
-- `prettier`, `ruff` for the auto-format hook (optional, hook degrades gracefully)
+- `mdformat` (markdown), `prettier` (JS/TS/JSON/YAML), `ruff` (Python) for the auto-format hook. All optional — hook degrades gracefully when a formatter is missing.
 
 ---
 
@@ -70,7 +70,7 @@ claude-code-companion/
 │   ├── user-prompt-secrets.sh   # Scan secrets before they reach the API
 │   ├── bash-guard.sh            # Block dangerous commands (sanitized patterns)
 │   ├── write-guard.sh           # Protect sensitive files and detect secrets
-│   ├── write-format.sh          # Auto-format on write (ruff/prettier)
+│   ├── write-format.sh          # Auto-format on write (mdformat/prettier/ruff)
 │   ├── bash-vuln.sh             # npm/pip audit after install
 │   ├── permission-git.sh        # Warn on destructive git operations
 │   ├── session-start.sh         # Project detection, git context
