@@ -1,0 +1,54 @@
+{
+  "_comment": "Reference template for ~/.claude/settings.json. DO NOT copy verbatim — review each section for your environment. The companion repo's install.sh deliberately does NOT touch your settings.json; merge by hand.",
+
+  "permissions": {
+    "_comment_permissions": "Permissions are personal. Start restrictive and loosen as you go. Superpowers needs agent dispatch enabled.",
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(pwd)",
+      "Bash(uv:*)",
+      "Bash(ruff:*)",
+      "Bash(pytest:*)",
+      "Bash(pnpm:*)",
+      "Bash(prettier:*)",
+      "Bash(vitest:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(rm -rf:*)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)",
+      "Bash(wget * | sh)"
+    ]
+  },
+
+  "_comment_features": "Required for Superpowers to dispatch agents.",
+  "experimental_features": {
+    "subagents": true
+  },
+
+  "_comment_hooks": "Wire up the companion hooks. Paths are relative to ~/.claude/.",
+  "hooks": {
+    "SessionStart": [{ "command": "hooks/scripts/session-start.sh" }],
+    "SessionEnd":   [{ "command": "hooks/scripts/session-end.sh" }],
+    "UserPromptSubmit": [{ "command": "hooks/scripts/user-prompt-secrets.sh" }],
+    "PreToolUse": [
+      { "match": "Bash",  "command": "hooks/scripts/bash-guard.sh" },
+      { "match": "Write", "command": "hooks/scripts/write-guard.sh" },
+      { "match": "Edit",  "command": "hooks/scripts/write-guard.sh" }
+    ],
+    "PostToolUse": [
+      { "match": "Write", "command": "hooks/scripts/write-format.sh" },
+      { "match": "Edit",  "command": "hooks/scripts/write-format.sh" },
+      { "match": "Bash",  "command": "hooks/scripts/bash-vuln.sh" }
+    ],
+    "PostToolUseFailure": [{ "command": "hooks/scripts/posttooluse-failure.sh" }],
+    "PermissionRequest":  [{ "command": "hooks/scripts/permission-git.sh" }],
+    "PreCompact": [{ "command": "hooks/scripts/pre-compact.sh" }],
+    "Stop":       [{ "command": "hooks/scripts/stop.sh" }]
+  }
+}

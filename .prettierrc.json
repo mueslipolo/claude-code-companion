@@ -1,0 +1,16 @@
+{
+  "_comment": "Optional. Copy to your project root (or ~/.prettierrc) if you want repo-wide consistency. The write-format.sh hook respects whatever prettier config it finds via prettier's normal resolution.",
+
+  "proseWrap": "preserve",
+  "printWidth": 100,
+
+  "overrides": [
+    {
+      "files": ["*.md", "*.mdx", "*.markdown"],
+      "options": {
+        "proseWrap": "preserve",
+        "tabWidth": 2
+      }
+    }
+  ]
+}
