@@ -15,9 +15,10 @@
 #   stdin: JSON event from Claude Code, including .tool_input.file_path
 #
 # Dependencies (all optional, hook skips silently if missing):
-#   jq        - parse the event JSON
-#   prettier  - format JS/TS/JSON/MD/YAML/CSS
-#   ruff      - format Python
+#   jq        - parse the event JSON (required)
+#   mdformat  - format Markdown (install: pipx install mdformat && pipx inject mdformat mdformat-gfm mdformat-tables)
+#   ruff      - format Python (install: pipx install ruff)
+#   prettier  - format JS/TS/JSON/YAML/CSS (install: npm i -g prettier)
 
 set -u  # but NOT -e: this hook must never break the session
 
@@ -44,18 +45,15 @@ fi
 case "$file_path" in
   # -- Markdown -----------------------------------------------------------
   #
-  # Prettier aligns GFM tables, normalizes list markers, and rewraps prose
-  # to its default print width. We use --prose-wrap=preserve so prose
-  # wrapping is left alone — only structural things (tables, lists,
-  # heading spacing, code-fence languages) get normalized.
+  # mdformat with the GFM and tables plugins:
+  #   - Aligns pipe tables
+  #   - Normalizes structural markdown
+  #   - Does NOT rewrap prose
+  #   - Does NOT touch code fences
   #
   *.md|*.mdx|*.markdown)
-    if command -v prettier >/dev/null 2>&1; then
-      prettier \
-        --write \
-        --prose-wrap preserve \
-        --parser markdown \
-        "$file_path" >/dev/null 2>&1 || true
+    if command -v mdformat >/dev/null 2>&1; then
+      mdformat "$file_path" >/dev/null 2>&1 || true
     fi
     ;;
 
