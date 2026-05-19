@@ -25,6 +25,8 @@ echo "==> Checking for Superpowers..."
 # common locations.
 superpowers_found=false
 for candidate in \
+  "$CLAUDE_HOME/plugins/cache/claude-plugins-official/superpowers" \
+  "$CLAUDE_HOME/plugins/cache/superpowers-marketplace/superpowers" \
   "$CLAUDE_HOME/plugins/superpowers" \
   "$CLAUDE_HOME/marketplaces/claude-plugins-official/superpowers" \
   "$CLAUDE_HOME/marketplaces/superpowers-marketplace/superpowers"
